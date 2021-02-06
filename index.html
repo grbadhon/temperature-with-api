@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="search-input" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="submit-button" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="weather-icon" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="city-name">Dhaka</h1>
+            <h4 id="country-name">BD</h4>
+            <h3><span id="current-temp">38.06</span>&deg;C</h3>
+            <h1 id="sky-status" class="lead">Clouds</h1>
+        </div>
+    </div>
+
+
+<script>
+    defaultCity();
+
+    
+
+    document.getElementById('submit-button').addEventListener('click', function(){
+
+ 
+    const cityName = document.getElementById('search-input').value;
+        fetch('http://api.openweathermap.org/data/2.5/weather?q='+ cityName + '&units=metric&appid=20faa4633ae5724641e48a8969665004')
+        .then(response=> response.json())
+        .then(data =>{
+            
+            console.log(data);
+            document.getElementById('city-name').innerText = data['name'];
+            document.getElementById('country-name').innerText = data["sys"]["country"];
+            document.getElementById('current-temp').innerText = data['main']['temp'];
+            document.getElementById('sky-status').innerText = data['weather'][0]['description'];
+            // document.getElementById('weather-icon').src = "https://openweathermap.org/img/wn/02d@2x.png";
+            let weatherIcon = data['weather'][0]['icon'];
+            document.getElementById("weather-icon").src = 'https://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';
+        })
+    })
+    function defaultCity(){
+    const defaultCityName ='Dhaka';
+    
+        fetch('http://api.openweathermap.org/data/2.5/weather?q='+ defaultCityName + '&units=metric&appid=20faa4633ae5724641e48a8969665004')
+        .then(response=> response.json())
+        .then(data =>{
+            
+            // console.log(data);
+            document.getElementById('city-name').innerText = data['name'];
+            document.getElementById('country-name').innerText = data["sys"]["country"];
+            document.getElementById('current-temp').innerText = data['main']['temp'];
+            document.getElementById('sky-status').innerText = data['weather'][0]['description'];
+            // document.getElementById('weather-icon').src = "https://openweathermap.org/img/wn/02d@2x.png";
+            let weatherIcon = data['weather'][0]['icon'];
+            document.getElementById("weather-icon").src = 'https://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';
+
+})
+}
+
+
+
+</script>
+</body>
+
+</html>
